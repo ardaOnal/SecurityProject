@@ -3,7 +3,7 @@ public class Record {
     private String url;
     private String username;
     private String password;
-    
+
     public Record(String site, String url, String username, String password) {
         this.site = site;
         this.url = url;
