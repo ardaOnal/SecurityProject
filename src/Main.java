@@ -1,4 +1,3 @@
-
 import javafx.application.Application;
 import org.bouncycastle.util.encoders.Hex;
 import javafx.scene.Scene;
@@ -7,6 +6,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application
 {
+
     public void start(Stage primaryStage) {
         System.out.println("Hello, Java");
         System.out.println("Version: "+ System.getProperty("java.version"));
@@ -16,6 +16,7 @@ public class Main extends Application
         primaryStage.setTitle("Hello javafz");
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
 }
