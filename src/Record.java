@@ -1,10 +1,9 @@
 public class Record {
     private String site;
-    String url;
-    String username;
-    String password;
-
-    //constructors
+    private String url;
+    private String username;
+    private String password;
+    
     public Record(String site, String url, String username, String password) {
         this.site = site;
         this.url = url;
@@ -12,7 +11,6 @@ public class Record {
         this.password = password;
     }
 
-    // getter/setter functions for the private variables
     public String getSite() {
         return site;
     }
