@@ -35,7 +35,7 @@ public class Protector {
         }
         // initialize a Cipher-object
     }
-    public boolean encrypt(String password, Table passwordTable){
+    public boolean encrypt(String password, Table passwordTable) {
         try{
             //generating initialization vector randomly
             SecureRandom secureRandom = SecureRandom.getInstance("DEFAULT", bouncyCastleProvider);
