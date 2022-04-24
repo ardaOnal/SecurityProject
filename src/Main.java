@@ -30,6 +30,7 @@ public class Main extends Application
         System.out.println("Version: "+ System.getProperty("java.version"));
         System.out.println("IntelliJ sees org.bouncycastle.util.encoder.Hex");
 
+
         primaryStage.setTitle("Password Manager");
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
