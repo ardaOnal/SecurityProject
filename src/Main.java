@@ -19,6 +19,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class Main extends Application
 {
 
@@ -27,7 +29,7 @@ public class Main extends Application
         System.out.println("Version: "+ System.getProperty("java.version"));
         System.out.println("IntelliJ sees org.bouncycastle.util.encoder.Hex");
 
-
+        /*
         primaryStage.setTitle("Password Manager");
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -72,10 +74,17 @@ public class Main extends Application
         Scene scene = new Scene(grid, 300, 275);
         primaryStage.setScene(scene);
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.show();*/
+
         Protector protector = new Protector( new BouncyCastleProvider());
         Record record1 = new Record("Facebook", "www.facebook.com", "eren", "12345");
         Record record2 = new Record( "Twitter", "www.twitter.com", "arda", "elbetbet");
+        ArrayList records = new ArrayList<Record>();
+        records.add(record1);
+        records.add(record2);
+        Table passwordTable = new Table( records);
+        System.out.println( protector.encrypt("123456", passwordTable));
+
 
     }
 

@@ -21,8 +21,8 @@ import java.security.spec.InvalidKeySpecException;
    storing/loading operations
 */
 public class Protector {
-    Cipher cipher;
-    BouncyCastleProvider bouncyCastleProvider;
+    private Cipher cipher;
+    private BouncyCastleProvider bouncyCastleProvider;
     public Protector(BouncyCastleProvider bouncyCastleProvider) {
         this.bouncyCastleProvider = bouncyCastleProvider;
         try {
@@ -37,8 +37,8 @@ public class Protector {
         try{
             //generating initialization vector randomly
             SecureRandom secureRandom = SecureRandom.getInstance("DEFAULT", bouncyCastleProvider);
-            byte[] generatedIV = new byte[16];
-            secureRandom.nextBytes(generatedIV);
+            byte[] iv = new byte[16];
+            secureRandom.nextBytes(iv);
 
             //salting to prevent rainbow table based attacks
             byte[] salt = new byte[32];
@@ -50,27 +50,29 @@ public class Protector {
                 return false;
 
             //taking the cipher object to the encryption mode to call doFinal
-            cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(generatedIV));
+            cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
 
-            //in order to encrypt, the data string first needs to be written into pdf
-            Files.write(Paths.get("files/passwords.pdf"), SerializationUtils.serialize(passwordTable));
-            byte[] input = Files.readAllBytes(Paths.get("files/passwords.pdf"));
+            //in order to encrypt, the data string first needs to be written into txt
+
+            Files.write(Paths.get("encryptedFiles/data.txt"), SerializationUtils.serialize(passwordTable.getRecords()));
+            byte[] input = Files.readAllBytes(Paths.get("encryptedFiles/data.txt"));
             byte[] output = cipher.doFinal(input);
 
-            //write the encrypted version
-            String outFile = "files/information." + Hex.toHexString(generatedIV) + ".aes";
-            Files.write(Paths.get(outFile), output);
+            String outFile = "encryptedFiles/" + Hex.toHexString(iv) + ".aes";
 
-            //delete the pdf including the passwords
-            File pdfFile = new File("files/passwords.pdf");
-            pdfFile.delete();
+            // save the iv to a txt file to use in decryption
+            Files.write( Paths.get("encryptedFiles/iv.txt"), Hex.toHexString(iv).getBytes());
+
+            Files.write(Paths.get(outFile), output);
+            File text = new File("encryptedFiles/data.txt");
+            text.delete();
             return true;
         }
         catch(Exception e)
         {
+            System.out.println( e);
             return false;
         }
-
     }
     public SecretKey passwordBasedKeyGeneration( String password, byte[] salt, int iterationCount, int keyLength){
         try{

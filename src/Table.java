@@ -11,4 +11,12 @@ public class Table extends ArrayList<Record>
     }
 
     public Table(ArrayList records) {this. records = records;}
+
+    public ArrayList<Record> getRecords(){
+        return records;
+    }
+
+    public void setRecords( ArrayList<Record> records){
+        this.records = records;
+    }
 }
