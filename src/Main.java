@@ -82,10 +82,12 @@ public class Main extends Application
         ArrayList records = new ArrayList<Record>();
         records.add(record1);
         records.add(record2);
+        records.add(new Record( "Google", "www.google.com", "efe", "robokop"));
         Table passwordTable = new Table( records);
         System.out.println( protector.encrypt("123456", passwordTable));
 
-
+        ArrayList<Record> output = new ArrayList<Record>();
+        protector.decrypt("123456", output);
     }
 
 }
