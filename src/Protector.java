@@ -21,11 +21,9 @@ import java.security.spec.InvalidKeySpecException;
    storing/loading operations
 */
 public class Protector {
-    String passwordFileName;
     Cipher cipher;
     BouncyCastleProvider bouncyCastleProvider;
-    public Protector(String fileName, BouncyCastleProvider bouncyCastleProvider) {
-        this.passwordFileName = passwordFileName;
+    public Protector(BouncyCastleProvider bouncyCastleProvider) {
         this.bouncyCastleProvider = bouncyCastleProvider;
         try {
             cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", bouncyCastleProvider);
@@ -66,7 +64,6 @@ public class Protector {
             //delete the pdf including the passwords
             File pdfFile = new File("files/passwords.pdf");
             pdfFile.delete();
-
             return true;
         }
         catch(Exception e)

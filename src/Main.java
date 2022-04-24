@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Hex;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -72,6 +73,9 @@ public class Main extends Application
         primaryStage.setScene(scene);
         primaryStage.setScene(scene);
         primaryStage.show();
+        Protector protector = new Protector( new BouncyCastleProvider());
+        Record record1 = new Record("Facebook", "www.facebook.com", "eren", "12345");
+        Record record2 = new Record( "Twitter", "www.twitter.com", "arda", "elbetbet");
 
     }
 

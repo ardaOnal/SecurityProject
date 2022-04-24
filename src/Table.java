@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Table extends ArrayList<Record>
@@ -8,4 +9,6 @@ public class Table extends ArrayList<Record>
     {
         records = new ArrayList<Record>();
     }
+
+    public Table(ArrayList records) {this. records = records;}
 }
