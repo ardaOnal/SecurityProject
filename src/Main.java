@@ -79,6 +79,20 @@ public class Main extends Application
                         actiontarget.setFill(Color.FIREBRICK);
                         actiontarget.setText("Passwords do not match");
                     }
+                    else if( passwordBox.getText().equals("")){
+                        actiontarget.setFill(Color.FIREBRICK);
+                        actiontarget.setText("Password cannot be empty");
+                    }
+                    else if( passwordBox.getText().length() < 8){
+                        actiontarget.setFill(Color.FIREBRICK);
+                        actiontarget.setText("Password should be longer than 8 characters");
+                    }
+
+                    else if( !isAlphanumeric(passwordBox.getText())){
+                        actiontarget.setFill(Color.FIREBRICK);
+                        actiontarget.setText("Password should involve both letters and digits");
+                    }
+
                     else
                     {
                         actiontarget.setFill(Color.GREEN);
@@ -170,6 +184,22 @@ public class Main extends Application
 
         File aesFile = new File("encryptedFiles/" + iv + ".aes");
         return !(aesFile.exists() && !aesFile.isDirectory());
+    }
+    public boolean isAlphanumeric(String s){
+        boolean hasDigit = false;
+        boolean hasLetter = false;
+        for (int i = 0; i < s.length(); i++) {
+            char x = s.charAt(i);
+            if (Character.isLetter(x)) {
+                hasLetter = true;
+                if(hasDigit){ return true;}
+            }
+            else if (Character.isDigit(x)) {
+                hasDigit = true;
+                if(hasLetter){ return true;}
+            }
+        }
+        return false;
     }
 
 }
