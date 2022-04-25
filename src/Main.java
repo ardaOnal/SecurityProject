@@ -25,10 +25,8 @@ import java.util.Scanner;
 
 public class Main extends Application
 {
+
     public void start(Stage primaryStage) {
-        System.out.println("Hello, Java");
-        System.out.println("Version: "+ System.getProperty("java.version"));
-        System.out.println("IntelliJ sees org.bouncycastle.util.encoder.Hex");
 
 
         GridPane gridPane = new GridPane();
@@ -97,7 +95,15 @@ public class Main extends Application
                     {
                         actiontarget.setFill(Color.GREEN);
                         actiontarget.setText("afferim plummy");
-                        protector.encrypt(passwordBox.getText(),new Table());
+                        protector.encrypt(passwordBox.getText(), new Table());
+                        ArrayList<Record> records= new ArrayList();
+                        records.add(new Record("","","",""));
+                        records.add(new Record("","","",""));
+                        records.add(new Record("","","",""));
+                        records.add(new Record("","","",""));
+                        records.add(new Record("","","",""));
+                        Manager manager = new Manager(records, passwordBox.getText());
+                        primaryStage.setScene( manager.getScene());
                     }
                 }
             });
@@ -130,10 +136,27 @@ public class Main extends Application
                 public void handle(ActionEvent e)
                 {
 
-                    if ( protector.decrypt(passwordBox.getText(),passwords))
+                    if ( protector.decrypt(passwordBox.getText(), passwords))
                     {
+                        System.out.println( "In main : " + passwords);
                         actiontarget.setFill(Color.GREEN);
                         actiontarget.setText("Correct password");
+                        Manager manager;
+                        if ( passwords.size() == 0)
+                        {
+                            ArrayList<Record> records= new ArrayList();
+                            records.add(new Record("","","",""));
+                            records.add(new Record("","","",""));
+                            records.add(new Record("","","",""));
+                            records.add(new Record("","","",""));
+                            records.add(new Record("","","",""));
+                            manager = new Manager(records, passwordBox.getText());
+                        }
+                        else
+                        {
+                            manager = new Manager(passwords, passwordBox.getText());
+                        }
+                        primaryStage.setScene(manager.getScene());
                     }
                     else
                     {
@@ -149,6 +172,7 @@ public class Main extends Application
         primaryStage.setScene(scene);
         primaryStage.setScene(scene);
         primaryStage.show();
+
 
 
         /*

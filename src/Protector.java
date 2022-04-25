@@ -8,14 +8,10 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import java.io.File;
-import java.io.IOException;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -137,8 +133,11 @@ public class Protector {
                 byte[] output = cipher.doFinal(input);
 
 
-                decryptedData = (ArrayList) SerializationUtils.deserialize(output);
-                System.out.println(decryptedData.toString());
+                ArrayList<Record> answer = (ArrayList) SerializationUtils.deserialize(output);
+                for(int i = 0; i < answer.size(); i++){
+                    decryptedData.add( new Record(answer.get(i).getSite(), answer.get(i).getUrl(), answer.get(i).getUsername(), answer.get(i).getPassword()));
+                }
+                System.out.println("In protector: " + decryptedData.toString());
                 return true;
             }
             catch (Exception e) {

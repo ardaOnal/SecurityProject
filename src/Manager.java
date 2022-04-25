@@ -10,13 +10,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Manager {
     private Scene screen;
     private ListView listView;
+    private ArrayList<Record> information;
+    private Protector protector;
 
-    public Manager() {
+    public Manager( ArrayList<Record> data, String masterPassword){
 
+        this.information = data;
+        protector = new Protector( new BouncyCastleProvider());
         GridPane table = new GridPane();
         Label id = new Label("Name");
         Label url = new Label("URL");
@@ -32,14 +41,14 @@ public class Manager {
         GridPane.setMargin(username, new Insets(5));
         GridPane.setMargin(password, new Insets(5));
 
-        for(int i=1; i< 10; i++){
+        for(int i=1; i< information.size() + 1; i++){
             TextField textField = new TextField();
             textField.setAlignment(Pos.CENTER);
             TextField textField1 = new TextField();
             textField1.setAlignment(Pos.CENTER);
             TextField textField2 = new TextField();
             textField2.setAlignment(Pos.CENTER);
-            PasswordField passwordField = new PasswordField();
+            TextField passwordField = new TextField();
             passwordField.setAlignment(Pos.CENTER);
 
             //add them to the GridPane
@@ -55,30 +64,100 @@ public class Manager {
             GridPane.setMargin(passwordField, new Insets(5));
         }
 
-        Button btn = new Button("asd");
+        Button btn = new Button("Add");
         btn.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e)
             {
+
+            }
+        });
+        Button btn2 = new Button("Save");
+        btn2.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e)
+            {
+                ArrayList<Record> newInformation = new ArrayList<>();
+                String name = "";
+                String url = "";
+                String username = "";
+                String password = "";
+
                 for (Node node : table.getChildren()) {
-                    if (GridPane.getRowIndex(node) > 0 && GridPane.getRowIndex(node) < 7) {
-                        System.out.print(((TextField) node).getText());
+                    int rowIndex = GridPane.getRowIndex(node);
+                    int colIndex = GridPane.getColumnIndex(node);
+                    if (rowIndex > 0 && rowIndex < information.size() + 1) {
+                        if (colIndex == 0) {
+                            name = ((TextField) node).getText();
+                        } else if (colIndex == 1) {
+                            url = ((TextField) node).getText();
+                        } else if (colIndex == 2) {
+                            username = ((TextField) node).getText();
+                        } else if (colIndex == 3) {
+                            password = ((TextField) node).getText();
+                            newInformation.add(new Record(name, url, username, password));
+                        }
                     }
                 }
+                // Reading the iv from iv.txt file
+                String iv = "";
+                try {
+                    File ivFile = new File("encryptedFiles/iv.txt");
+                    Scanner scanner = new Scanner(ivFile);
+                    while (scanner.hasNextLine()) {
+                        String data = scanner.nextLine();
+                        iv = data;
+                    }
+                    scanner.close();
+                } catch (Exception exception) {
+                    System.out.println(exception);
+                }
+                File aesFile = new File("encryptedFiles/" + iv + ".aes");
+                aesFile.delete();
+                protector.encrypt( masterPassword, new Table( newInformation));
             }
         });
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(btn);
-        table.add(hbBtn, 3, 10);
+        hbBtn.getChildren().add(btn2);
+
+        table.add(hbBtn, 3, information.size() + 1);
 
         table.setAlignment(Pos.CENTER);
+        System.out.println( information);
+        for (Node node : table.getChildren()) {
+            int rowIndex = GridPane.getRowIndex(node);
+            int colIndex = GridPane.getColumnIndex(node);
+            if (rowIndex > 0 && rowIndex < information.size() + 1) {
+                if( colIndex == 0){
+                    ((TextField) node).setText( information.get( rowIndex - 1).getSite());
+                }
+                else if( colIndex == 1){
+                    ((TextField) node).setText( information.get( rowIndex - 1).getUrl());
+                }
+                else if( colIndex == 2){
+                    ((TextField) node).setText( information.get( rowIndex - 1).getUsername());
+                }
+                else if( colIndex == 3){
+                    ((TextField) node).setText( information.get( rowIndex - 1).getPassword());
+                }
+            }
 
+        }
         screen = new Scene(table, 800, 500);
+
     }
 
     public Scene getScene() {
         return screen;
+    }
+    public void setInformation(ArrayList<Record> information){
+        this.information = information;
+    }
+    public ArrayList<Record> getInformation(){
+        return information;
     }
 }
