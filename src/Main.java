@@ -31,13 +31,14 @@ public class Main extends Application
         System.out.println("IntelliJ sees org.bouncycastle.util.encoder.Hex");
 
 
+        GridPane gridPane = new GridPane();
         primaryStage.setTitle("Password Manager");
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
+        gridPane.setVgap(10);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(10);
 
+
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
         Protector protector = new Protector(new BouncyCastleProvider());
         ArrayList<Record> passwords = new ArrayList();
 
@@ -45,35 +46,35 @@ public class Main extends Application
         {
             Text scenetitle = new Text("Welcome, please set a master password");
             scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-            grid.add(scenetitle, 0, 0, 2, 1);
+            gridPane.add(scenetitle, 0, 0, 2, 1);
 
-            Label pw = new Label("Password:");
-            grid.add(pw, 0, 2);
-            Label pw2 = new Label("Repeat password:");
-            grid.add(pw2, 0, 3);
+            Label passwordLabel = new Label("Password:");
+            gridPane.add(passwordLabel, 0, 2);
+            Label passwordLabel2 = new Label("Repeat password:");
+            gridPane.add(passwordLabel2, 0, 3);
 
-            PasswordField pwBox = new PasswordField();
-            grid.add(pwBox, 1, 2);
+            PasswordField passwordBox = new PasswordField();
+            gridPane.add(passwordBox, 1, 2);
 
-            PasswordField pwBox2 = new PasswordField();
-            grid.add(pwBox2, 1, 3);
+            PasswordField passwordBox2 = new PasswordField();
+            gridPane.add(passwordBox2, 1, 3);
 
             Button btn = new Button("Set password");
             HBox hbBtn = new HBox(10);
             hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
             hbBtn.getChildren().add(btn);
-            grid.add(hbBtn, 1, 4);
+            gridPane.add(hbBtn, 1, 4);
 
             final Text actiontarget = new Text();
-            grid.add(actiontarget, 1, 6);
+            gridPane.add(actiontarget, 1, 6);
 
             btn.setOnAction(new EventHandler<ActionEvent>() {
 
                 @Override
                 public void handle(ActionEvent e) {
-                    System.out.println( pwBox.getText() + " " + pwBox2.getText());
+                    System.out.println( passwordBox.getText() + " " + passwordBox2.getText());
 
-                    if ( !pwBox.getText().equals(pwBox2.getText()))
+                    if ( !passwordBox.getText().equals(passwordBox2.getText()))
                     {
                         actiontarget.setFill(Color.FIREBRICK);
                         actiontarget.setText("Passwords do not match");
@@ -82,7 +83,7 @@ public class Main extends Application
                     {
                         actiontarget.setFill(Color.GREEN);
                         actiontarget.setText("afferim plummy");
-                        protector.encrypt(pwBox.getText(),new Table());
+                        protector.encrypt(passwordBox.getText(),new Table());
                     }
                 }
             });
@@ -91,23 +92,23 @@ public class Main extends Application
         {
             Text scenetitle = new Text("Welcome, please enter the password");
             scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 14));
-            grid.add(scenetitle, 0, 0, 2, 1);
+            gridPane.add(scenetitle, 0, 0, 2, 1);
 
 
-            Label pw = new Label("Password:");
-            grid.add(pw, 0, 1);
+            Label passwordLabel = new Label("Password:");
+            gridPane.add(passwordLabel, 0, 1);
 
-            PasswordField pwBox = new PasswordField();
-            grid.add(pwBox, 1, 1);
+            PasswordField passwordBox = new PasswordField();
+            gridPane.add(passwordBox, 1, 1);
 
             Button btn = new Button("Login");
             HBox hbBtn = new HBox(10);
             hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
             hbBtn.getChildren().add(btn);
-            grid.add(hbBtn, 1, 2);
+            gridPane.add(hbBtn, 1, 2);
 
             final Text actiontarget = new Text();
-            grid.add(actiontarget, 1, 6);
+            gridPane.add(actiontarget, 1, 6);
 
             btn.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -115,7 +116,7 @@ public class Main extends Application
                 public void handle(ActionEvent e)
                 {
 
-                    if ( protector.decrypt(pwBox.getText(),passwords))
+                    if ( protector.decrypt(passwordBox.getText(),passwords))
                     {
                         actiontarget.setFill(Color.GREEN);
                         actiontarget.setText("Correct password");
@@ -130,7 +131,7 @@ public class Main extends Application
         }
 
 
-        Scene scene = new Scene(grid, 300, 275);
+        Scene scene = new Scene(gridPane, 300, 275);
         primaryStage.setScene(scene);
         primaryStage.setScene(scene);
         primaryStage.show();
