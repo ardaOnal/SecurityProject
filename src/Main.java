@@ -231,6 +231,7 @@ public class Main extends Application
         System.out.println("Encryption method returns: " + protector.encrypt("123456", passwordTable));
 
         ArrayList<Record> output = new ArrayList<Record>();
+        System.out.println( "Decryption method returns: " + protector.decrypt("asdasd", output));
         System.out.println( "Decryption method returns: " + protector.decrypt("123456", output));
         System.out.println( "Decrypted data: " + output);
         System.out.println( "Is data before and after encrytion equal: " + ("" + records).equals( "" + output));
