@@ -175,21 +175,6 @@ public class Main extends Application
         primaryStage.setScene(scene);
         primaryStage.show();
 
-
-
-        /*
-        Protector protector = new Protector( new BouncyCastleProvider());
-        Record record1 = new Record("Facebook", "www.facebook.com", "eren", "12345");
-        Record record2 = new Record( "Twitter", "www.twitter.com", "arda", "elbetbet");
-        ArrayList records = new ArrayList<Record>();
-        records.add(record1);
-        records.add(record2);
-        records.add(new Record( "Google", "www.google.com", "efe", "robokop"));
-        Table passwordTable = new Table( records);
-        System.out.println( protector.encrypt("123456", passwordTable));
-
-        ArrayList<Record> output = new ArrayList<Record>();
-        protector.decrypt("123456", output);*/
     }
 
     /*
@@ -232,4 +217,22 @@ public class Main extends Application
         return false;
     }
 
+    public void test()
+    {
+        Protector protector = new Protector( new BouncyCastleProvider());
+        Record record1 = new Record("Facebook", "www.facebook.com", "eren", "12345");
+        Record record2 = new Record( "Twitter", "www.twitter.com", "arda", "asdfgh");
+        ArrayList records = new ArrayList<Record>();
+        records.add(record1);
+        records.add(record2);
+        records.add(new Record( "Google", "www.google.com", "efe", "ilovesecurity"));
+        Table passwordTable = new Table( records);
+        System.out.println("Encrypted data: " + records);
+        System.out.println("Encryption method returns: " + protector.encrypt("123456", passwordTable));
+
+        ArrayList<Record> output = new ArrayList<Record>();
+        System.out.println( "Decryption method returns: " + protector.decrypt("123456", output));
+        System.out.println( "Decrypted data: " + output);
+        System.out.println( "Is data before and after encrytion equal: " + ("" + records).equals( "" + output));
+    }
 }
