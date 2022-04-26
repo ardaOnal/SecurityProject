@@ -1,6 +1,10 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/*
+    Table class holding an ArrayList which holds Record objects,
+    which corresponds to each row in the GUI
+ */
 public class Table extends ArrayList<Record>
 {
     private ArrayList<Record> records;

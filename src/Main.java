@@ -23,9 +23,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/*
+    Main class where the password manager is ran, an
+ */
 public class Main extends Application
 {
-
     public void start(Stage primaryStage) {
 
 
@@ -40,6 +42,7 @@ public class Main extends Application
         Protector protector = new Protector(new BouncyCastleProvider());
         ArrayList<Record> passwords = new ArrayList();
 
+        // if it is the first time someone logs in, they have to set the master password
         if (isFirstLogin())
         {
             Text scenetitle = new Text("Welcome, please set a master password");
@@ -70,7 +73,6 @@ public class Main extends Application
 
                 @Override
                 public void handle(ActionEvent e) {
-                    System.out.println( passwordBox.getText() + " " + passwordBox2.getText());
 
                     if ( !passwordBox.getText().equals(passwordBox2.getText()))
                     {
@@ -108,6 +110,7 @@ public class Main extends Application
                 }
             });
         }
+        // Not first time logging in
         else
         {
             Text scenetitle = new Text("Welcome, please enter the password");
@@ -138,7 +141,6 @@ public class Main extends Application
 
                     if ( protector.decrypt(passwordBox.getText(), passwords))
                     {
-                        System.out.println( "In main : " + passwords);
                         actiontarget.setFill(Color.GREEN);
                         actiontarget.setText("Correct password");
                         Manager manager;
@@ -190,6 +192,10 @@ public class Main extends Application
         protector.decrypt("123456", output);*/
     }
 
+    /*
+        Method to check if this is the first login, by checking if the aes file named <iv>.aes
+        exists or not
+     */
     public boolean isFirstLogin()
     {
         // Reading the iv from iv.txt file

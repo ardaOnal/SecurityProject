@@ -17,9 +17,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/*
+    Manager class, responsible for the GUI of the actual password manager, as well as
+    loading previous data and storing the data entered
+ */
 public class Manager {
     private Scene screen;
-    private ListView listView;
     private ArrayList<Record> information;
     private Protector protector;
 
@@ -27,7 +30,6 @@ public class Manager {
 
         this.information = data;
         protector = new Protector( new BouncyCastleProvider());
-        int rowCount = information.size();
         GridPane table = new GridPane();
         Label id = new Label("Name");
         Label url = new Label("URL");
@@ -53,11 +55,11 @@ public class Manager {
             TextField passwordField = new TextField();
             passwordField.setAlignment(Pos.CENTER);
 
-            //add them to the GridPane
-            table.add(textField, 0, i); //  (child, columnIndex, rowIndex)
-            table.add(textField1, 1, i); //  (child, columnIndex, rowIndex)
-            table.add(textField2, 2, i); //  (child, columnIndex, rowIndex)
-            table.add(passwordField, 3, i); //  (child, columnIndex, rowIndex)
+            // adding textFields to the gridPane
+            table.add(textField, 0, i);
+            table.add(textField1, 1, i);
+            table.add(textField2, 2, i);
+            table.add(passwordField, 3, i);
 
             // set up the margins
             GridPane.setMargin(textField, new Insets(5));
@@ -66,10 +68,12 @@ public class Manager {
             GridPane.setMargin(passwordField, new Insets(5));
         }
 
-        Button btn = new Button("Add");
-        Button btn2 = new Button("Save");
+        Button btn = new Button("Add"); //add button
+        Button btn2 = new Button("Save"); //save button
         btn.setOnAction(new EventHandler<ActionEvent>() {
 
+            // adding a new row to the gui, and a new record object to the
+            // arraylist which holds the information
             @Override
             public void handle(ActionEvent e)
             {
@@ -109,6 +113,7 @@ public class Manager {
         });
         btn2.setOnAction(new EventHandler<ActionEvent>() {
 
+            // saving the information entered to the field
             @Override
             public void handle(ActionEvent e)
             {
@@ -124,10 +129,8 @@ public class Manager {
                     int colIndex = GridPane.getColumnIndex(node);
 
                     if (rowIndex > 0 ) {
-                        System.out.println(rowIndex + " " + colIndex);
                         if (node instanceof HBox)
                         {
-                            System.out.println( "Node:" + ((HBox) node).getChildren());
                             continue;
                         }
                         if (colIndex == 0) {
@@ -157,9 +160,12 @@ public class Manager {
                 }
                 File aesFile = new File("encryptedFiles/" + iv + ".aes");
                 aesFile.delete();
+
+                /* encrypting the information to an aes file named <iv>.aes
+                we chose this name so that the file can be found directly
+                for encrypting and decrypting, and iv is by definition public so it works*/
                 protector.encrypt( masterPassword, new Table( newInformation));
 
-                System.out.println("Info size: " + newInformation.size());
             }
         });
         HBox hbBtn = new HBox(10);
@@ -171,7 +177,10 @@ public class Manager {
         table.add(hbBtn, 3, information.size() + 1);
 
         table.setAlignment(Pos.CENTER);
-        System.out.println( information);
+        /* setting the textFields with previous values of them, which
+            have been saved to the aes file and decrypted, now stored in the
+            variable called "information"
+         */
         for (Node node : table.getChildren()) {
             int rowIndex = GridPane.getRowIndex(node);
             int colIndex = GridPane.getColumnIndex(node);

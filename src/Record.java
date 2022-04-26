@@ -1,5 +1,9 @@
 import java.io.Serializable;
 
+/*
+    Record class which holds the site's name, its url, the username
+    and the password to show them to the user in the password manager
+ */
 public class Record implements Serializable {
     private String site;
     private String url;
