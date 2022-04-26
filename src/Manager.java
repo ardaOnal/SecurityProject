@@ -73,6 +73,8 @@ public class Manager {
             @Override
             public void handle(ActionEvent e)
             {
+                GridPane.clearConstraints(table);
+
                 TextField textField = new TextField();
                 textField.setAlignment(Pos.CENTER);
                 TextField textField1 = new TextField();
@@ -81,6 +83,7 @@ public class Manager {
                 textField2.setAlignment(Pos.CENTER);
                 TextField passwordField = new TextField();
                 passwordField.setAlignment(Pos.CENTER);
+
 
                 //add them to the GridPane
                 table.add(textField, 0, table.getRowCount()); //  (child, columnIndex, rowIndex)
@@ -99,7 +102,7 @@ public class Manager {
                 hbBtn.getChildren().add(btn);
                 hbBtn.getChildren().add(btn2);
 
-                table.add(hbBtn, 3, table.getRowCount() + 1);
+                table.add(hbBtn, 3, table.getRowCount());
                 information.add(new Record());
 
             }
@@ -117,13 +120,16 @@ public class Manager {
 
                 for (Node node : table.getChildren()) {
 
-                    if (node instanceof HBox)
-                        continue;
-
                     int rowIndex = GridPane.getRowIndex(node);
                     int colIndex = GridPane.getColumnIndex(node);
 
-                    if (rowIndex > 0 && rowIndex < information.size() + 1) {
+                    if (rowIndex > 0 ) {
+                        System.out.println(rowIndex + " " + colIndex);
+                        if (node instanceof HBox)
+                        {
+                            System.out.println( "Node:" + ((HBox) node).getChildren());
+                            continue;
+                        }
                         if (colIndex == 0) {
                             name = ((TextField) node).getText();
                         } else if (colIndex == 1) {
@@ -131,7 +137,6 @@ public class Manager {
                         } else if (colIndex == 2) {
                             username = ((TextField) node).getText();
                         } else if (colIndex == 3) {
-                            System.out.println(rowIndex + " " + colIndex);
                             password = ((TextField) node).getText();
                             newInformation.add(new Record(name, url, username, password));
                         }
@@ -153,6 +158,8 @@ public class Manager {
                 File aesFile = new File("encryptedFiles/" + iv + ".aes");
                 aesFile.delete();
                 protector.encrypt( masterPassword, new Table( newInformation));
+
+                System.out.println("Info size: " + newInformation.size());
             }
         });
         HBox hbBtn = new HBox(10);
